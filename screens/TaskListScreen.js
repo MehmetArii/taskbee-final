@@ -7,6 +7,7 @@ import {
   Modal,
   TextInput,
   Alert,
+  ScrollView,
 } from 'react-native';
 import { collection, query, where, onSnapshot, doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
@@ -98,8 +99,16 @@ const TaskListScreen = () => {
         )}
         <Text style={taskStyles.taskTitle}>{item.title}</Text>
       </View>
+
+      {item.description !== '' && (
+        <Text style={taskStyles.taskDescription}>{item.description}</Text>
+      )}
+
       {item.dueDate && (
-        <Text style={taskStyles.taskDescription}>Bitiş: {item.dueDate}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+          <Ionicons name="calendar-outline" size={16} color="#666" style={{ marginRight: 6 }} />
+          <Text style={[taskStyles.taskDescription, { fontStyle: 'italic' }]}> {item.dueDate} </Text>
+        </View>
       )}
     </TouchableOpacity>
   );
@@ -122,36 +131,38 @@ const TaskListScreen = () => {
       />
 
       {/* Modal */}
-      <Modal visible={modalVisible} transparent animationType="slide">
+      <Modal visible={modalVisible} transparent animationType="fade">
         <View style={taskStyles.modalBackground}>
-          <View style={taskStyles.modalContainer}>
-            <Text style={taskStyles.modalTitle}>Görevi Güncelle</Text>
+          <View style={[taskStyles.modalContainer, { padding: 0 }]}>
+            <ScrollView contentContainerStyle={{ padding: 20 }} showsVerticalScrollIndicator={false}>
+              <Text style={taskStyles.modalTitle}>Görevi Güncelle</Text>
 
-            <TextInput
-              style={GlobalStyles.input}
-              value={editedTitle}
-              onChangeText={setEditedTitle}
-              placeholder="Başlık"
-            />
-            <TextInput
-              style={[GlobalStyles.input, { height: 80 }]}
-              value={editedDescription}
-              onChangeText={setEditedDescription}
-              placeholder="Açıklama"
-              multiline
-            />
+              <TextInput
+                style={GlobalStyles.input}
+                value={editedTitle}
+                onChangeText={setEditedTitle}
+                placeholder="Başlık"
+              />
+              <TextInput
+                style={[GlobalStyles.textarea, { maxHeight: 120 }]}
+                value={editedDescription}
+                onChangeText={setEditedDescription}
+                placeholder="Açıklama"
+                multiline
+              />
 
-            <View style={taskStyles.iconRow}>
-              <TouchableOpacity onPress={updateTask}>
-                <Ionicons name="checkmark-done-outline" size={30} color="green" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => completeTask(selectedTask.id)}>
-                <Ionicons name="checkmark-done-circle-outline" size={28} color="#f5c518" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={closeModal}>
-                <Ionicons name="close-circle-outline" size={30} color="gray" />
-              </TouchableOpacity>
-            </View>
+              <View style={taskStyles.iconRow}>
+                <TouchableOpacity onPress={updateTask}>
+                  <Ionicons name="checkmark-done-outline" size={30} color="green" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => completeTask(selectedTask.id)}>
+                  <Ionicons name="checkmark-done-circle-outline" size={28} color="#f5c518" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={closeModal}>
+                  <Ionicons name="close-circle-outline" size={30} color="gray" />
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           </View>
         </View>
       </Modal>
