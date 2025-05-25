@@ -13,12 +13,25 @@ import {
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import GlobalStyles from '../styles/GlobalStyles';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function AddTaskScreen() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [importance, setImportance] = useState('normal');
-  const [dueDateText, setDueDateText] = useState(''); // Yeni tarih alanı
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleDateChange = (event, date) => {
+    setShowDatePicker(false);
+
+    if (event.type === 'dismissed' || !date) {
+      setSelectedDate(null); // 👈 iptal edilirse temizle
+      return;
+    }
+
+    setSelectedDate(date);
+  };
 
   const handleAddTask = async () => {
     if (!title || !description) {
@@ -31,7 +44,9 @@ export default function AddTaskScreen() {
         title,
         description,
         importance,
-        dueDate: dueDateText.trim() !== '' ? dueDateText.trim() : null,
+        dueDate: selectedDate
+          ? selectedDate.toISOString().split('T')[0]
+          : null,
         createdAt: Timestamp.now(),
         userId: auth.currentUser.uid,
         isCompleted: false,
@@ -41,7 +56,7 @@ export default function AddTaskScreen() {
       setTitle('');
       setDescription('');
       setImportance('normal');
-      setDueDateText('');
+      setSelectedDate(null);
     } catch (error) {
       Alert.alert('Hata', error.message);
     }
@@ -114,7 +129,8 @@ export default function AddTaskScreen() {
             style={[
               GlobalStyles.button,
               {
-                backgroundColor: importance === 'important' ? '#E53935' : '#fff',
+                backgroundColor:
+                  importance === 'important' ? '#E53935' : '#fff',
                 borderWidth: 1.5,
                 borderColor: '#222',
                 flex: 1,
@@ -132,14 +148,32 @@ export default function AddTaskScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Elle girilen bitiş tarihi */}
-        <TextInput
-          placeholder="Bitiş Tarihi (isteğe bağlı) - Örn: 25.05.2025"
-          value={dueDateText}
-          onChangeText={setDueDateText}
-          style={GlobalStyles.input}
-          placeholderTextColor="#999"
-        />
+        {/* Tarih Seçici */}
+        <TouchableOpacity
+          style={[
+            GlobalStyles.button,
+            {
+              backgroundColor: '#eee',
+              marginBottom: 8,
+            },
+          ]}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Text style={[GlobalStyles.buttonText, { color: '#222' }]}>
+            {selectedDate
+              ? `Seçilen Tarih: ${selectedDate.toISOString().split('T')[0]}`
+              : 'Bitiş Tarihi Seç (Opsiyonel)'}
+          </Text>
+        </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={selectedDate || new Date()}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
 
         <TouchableOpacity style={GlobalStyles.button} onPress={handleAddTask}>
           <Text style={GlobalStyles.buttonText}>Görevi Kaydet</Text>

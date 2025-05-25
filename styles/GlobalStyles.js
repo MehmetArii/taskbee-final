@@ -11,11 +11,11 @@ const GlobalStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-  fontSize: 22,
-  fontWeight: 'bold',
-  color: '#222',
-  textAlign: 'center',
-  marginBottom: 16,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#222',
+    textAlign: 'center',
+    marginBottom: 16,
   },
   logo: {
     fontSize: 36,
@@ -61,6 +61,17 @@ const GlobalStyles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     marginTop: 24,
+  },
+  bgLogo: {
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    right: 0,
+    fontSize: 60,
+    textAlign: 'center',
+    color: '#f5c518',
+    opacity: 0.05,
+    zIndex: -1,
   },
 });
 
@@ -132,7 +143,26 @@ export const taskStyles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%',
   },
+  taskRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  calendarWrapper: {
+    flex: 1,
+    backgroundColor: '#fffbea',
+    padding: 16,
+    paddingTop: 32,
+  },
+  calendarLogo: {
+    fontSize: 32,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#f5c518',
+    marginBottom: 16,
+  },
 });
+
 export const profileStyles = StyleSheet.create({
   brandBig: {
     fontSize: 32,
@@ -192,6 +222,3 @@ export const profileStyles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-
-

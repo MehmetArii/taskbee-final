@@ -1,10 +1,10 @@
-// firebaseConfig.js
+
 
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-// Senin verdiğin config değerleri:
+
 const firebaseConfig = {
   apiKey: "AIzaSyDR_a2_bMTTiX1_xx14Eunt4nkCk2FIFI4",
   authDomain: "todo-app-mehmet-57631.firebaseapp.com",
@@ -15,10 +15,10 @@ const firebaseConfig = {
   measurementId: "G-J3TQSVWBPE"
 };
 
-// Firebase başlat
+
 const app = initializeApp(firebaseConfig);
 
-// Modülleri dışa aktar
+
 const auth = getAuth(app);
 const db = getFirestore(app);
 

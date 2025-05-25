@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TaskListScreen from './screens/TaskListScreen';
 import AddTaskScreen from './screens/AddTaskScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import CalendarScreen from './screens/CalendarScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -29,8 +30,9 @@ export default function TabNavigator() {
     >
       <Tab.Screen name="TaskList" component={TaskListScreen} options={{ tabBarLabel: 'Görevler' }} />
       <Tab.Screen name="AddTask" component={AddTaskScreen} options={{ tabBarLabel: 'Ekle' }} />
+      <Tab.Screen name="Calendar" component={CalendarScreen} options={{ tabBarLabel: 'Takvim', tabBarIcon: ({ color, size }) => (
+      <Ionicons name="calendar-outline" size={size} color={color} />), }}/>
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profil' }} />
-
     </Tab.Navigator>
   );
 }
